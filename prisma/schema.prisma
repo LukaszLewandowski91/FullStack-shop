@@ -18,6 +18,30 @@ model Product {
   image String
   producent String
   category String
+
+  gallery Images[]
+  orders Order[]
+}
+
+model Images {
+  id String @id @default(uuid())
+  image String
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String 
+}
+
+model Order {
+  id String @id @default(uuid())
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  client User @relation(fields: [userId], references: [id])
+  userId String
+  address String
+  phoneNumber String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
 }
 
 enum Role {
@@ -30,6 +54,8 @@ model User {
   email String @unique
   role Role @default(USER)
   password Password?
+
+  orders Order[]
 }
 
 model Password {
