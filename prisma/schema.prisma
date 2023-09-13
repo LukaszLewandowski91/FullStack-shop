@@ -15,7 +15,7 @@ model Product {
   title String @unique
   description String
   price Int
-  producent String
+  producer String
   category String
 
   gallery Images[]
