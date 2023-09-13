@@ -11,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma/prisma.module';
 import * as cors from 'cors';
 import { ConfigModule } from '@nestjs/config';
+import { ProductsModule } from './products/products.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -19,6 +20,7 @@ import configuration from './config/configuration';
     AuthModule,
     PrismaModule,
     ConfigModule.forRoot({ load: [configuration], isGlobal: true }),
+    ProductsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
