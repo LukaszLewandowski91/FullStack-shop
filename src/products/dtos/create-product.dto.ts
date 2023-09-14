@@ -12,8 +12,8 @@ export class CreateProductDTO {
   description: string;
 
   @IsNotEmpty()
-  @IsNumber()
-  price: number;
+  @IsString()
+  price: string;
 
   @IsNotEmpty()
   @IsString()

@@ -14,7 +14,7 @@ model Product {
   id String @id @default(uuid())
   title String @unique
   description String
-  price Int
+  price String
   producer String
   category String
 
