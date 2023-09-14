@@ -28,8 +28,6 @@ export class ProductsController {
     @UploadedFiles() files: Array<Express.Multer.File>,
     @Body() productData: CreateProductDTO,
   ) {
-    console.log(files);
-
-    return this.productsService.create(productData);
+    return await this.productsService.create(files, productData);
   }
 }
