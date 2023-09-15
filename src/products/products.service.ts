@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { Product } from '@prisma/client';
+import { Images, Product } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as fs from 'fs/promises';
 @Injectable()
@@ -11,11 +11,14 @@ export class ProductsService {
     productData: Omit<Product, 'id'>,
   ): Promise<Product> {
     try {
-      const product = await this.prismaService.product.create({
-        data: productData,
+      return await this.prismaService.product.create({
+        data: {
+          ...productData,
+          gallery: {
+            create: files.map((file) => ({ image: file.filename })),
+          },
+        },
       });
-
-      return product;
     } catch (error) {
       if (error.code === 'P2002') {
         files.map((file) => {
