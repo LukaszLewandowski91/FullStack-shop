@@ -1,7 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
+  Get,
   InternalServerErrorException,
+  NotFoundException,
+  Param,
+  ParseUUIDPipe,
   Post,
   UploadedFile,
   UploadedFiles,
@@ -19,6 +24,30 @@ import { multerOptions } from 'src/config/multerOptions.config';
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
+
+  @Get('/')
+  getAll(): any {
+    return this.productsService.getAll();
+  }
+
+  @Get('/:id')
+  async getById(@Param('id', new ParseUUIDPipe()) id: string) {
+    if (!(await this.productsService.getById(id))) {
+      throw new NotFoundException('Product not found');
+    }
+    return this.productsService.getById(id);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AdminAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  async deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
+    if (!(await this.productsService.getById(id))) {
+      throw new NotFoundException('Product not found');
+    }
+    await this.productsService.delete(id);
+    return { success: true };
+  }
 
   @Post('/')
   @UseGuards(AdminAuthGuard)

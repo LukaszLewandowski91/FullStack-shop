@@ -32,4 +32,31 @@ export class ProductsService {
       throw error;
     }
   }
+
+  public getAll(): Promise<Product[]> {
+    return this.prismaService.product.findMany({
+      include: { gallery: true },
+    });
+  }
+
+  public getById(id: Product['id']): Promise<Product | null> {
+    return this.prismaService.product.findUnique({
+      where: { id },
+      include: { gallery: true },
+    });
+  }
+
+  public async delete(id: Product['id']): Promise<Product> {
+    const gallery = this.prismaService.images.findMany({
+      where: { productId: id },
+    });
+
+    (await gallery).map((file) => {
+      fs.unlink(`${process.env.UPLOAD_DIR}/${file.image}`);
+    });
+
+    return this.prismaService.product.delete({
+      where: { id },
+    });
+  }
 }
