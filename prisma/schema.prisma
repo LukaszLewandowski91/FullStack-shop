@@ -29,19 +29,32 @@ model Images {
   productId String 
 }
 
+model Shipment {
+  id String @id @default(uuid())
+  address String
+  phoneNumber String
+  email String
+  deliveryType String
+  amount Float
+
+  order Order @relation(fields: [orderId], references: [id])
+  orderId String
+}
+
 model Order {
   id String @id @default(uuid())
   product Product @relation(fields: [productId], references: [id])
   productId String
   client User @relation(fields: [userId], references: [id])
   userId String
-  address String
-  phoneNumber String
+  quantity Int
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  shipmentDetails Shipment[]
 }
+
 
 enum Role {
   USER
