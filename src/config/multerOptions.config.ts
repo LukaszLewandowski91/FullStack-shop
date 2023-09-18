@@ -1,7 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request } from 'express';
-import { existsSync } from 'fs';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { v4 as uuid } from 'uuid';
