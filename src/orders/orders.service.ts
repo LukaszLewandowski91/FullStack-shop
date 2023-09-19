@@ -23,4 +23,14 @@ export class OrdersService {
       throw error;
     }
   }
+
+  public getAll(): Promise<Order[]> {
+    return this.prismaService.order.findMany({
+      include: {
+        order: {
+          include: { product: true },
+        },
+      },
+    });
+  }
 }
