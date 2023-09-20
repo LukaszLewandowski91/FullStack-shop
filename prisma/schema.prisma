@@ -36,7 +36,7 @@ model Order {
   address String
   city String
   phoneNumber String
-  email String
+  email String 
   deliveryType String
   amountPay Float
   amountProducts Int

@@ -1,16 +1,3 @@
-// id String @id @default(uuid())
-//   firstName String
-//   lastName String
-//   address String
-//   city String
-//   phoneNumber String
-//   email String
-//   deliveryType String
-//   amountPay Float
-//   amountProducts Int
-//   client User @relation(fields: [userId], references: [id])
-//   userId String
-
 import {
   ArrayNotEmpty,
   IsArray,

@@ -33,4 +33,21 @@ export class OrdersService {
       },
     });
   }
+
+  public getById(id: Order['id']): Promise<Order> {
+    return this.prismaService.order.findUnique({
+      where: { id },
+      include: {
+        order: {
+          include: { product: true },
+        },
+      },
+    });
+  }
+
+  // public getByEmail(email: Order['email']): Promise<Order> {
+  //   return this.prismaService.order.findMany({
+  //     where: { email },
+  //   });
+  // }
 }
