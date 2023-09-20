@@ -32,14 +32,14 @@ export class OrdersController {
     return this.ordersService.getAll();
   }
 
-  // @Get('/myOrders/:email')
-  // @UseGuards(JwtAuthGuard)
-  // async getByEmail(@Param('email') email: string) {
-  //   if (!(await this.ordersService.getByEmail(email))) {
-  //     throw new NotFoundException('Order not found');
-  //   }
-  //   return this.ordersService.getByEmail(email);
-  // }
+  @Get('/myOrders/:email')
+  @UseGuards(JwtAuthGuard)
+  async getByEmail(@Param('email') email: string) {
+    if (!(await this.ordersService.getByEmail(email))) {
+      throw new NotFoundException('Order not found');
+    }
+    return this.ordersService.getByEmail(email);
+  }
 
   @Get('/:id')
   @UseGuards(JwtAuthGuard)

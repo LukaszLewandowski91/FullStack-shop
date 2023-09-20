@@ -45,9 +45,14 @@ export class OrdersService {
     });
   }
 
-  // public getByEmail(email: Order['email']): Promise<Order> {
-  //   return this.prismaService.order.findMany({
-  //     where: { email },
-  //   });
-  // }
+  public getByEmail(email: Order['email']): Promise<Order[]> {
+    return this.prismaService.order.findMany({
+      where: { email },
+      include: {
+        order: {
+          include: { product: true },
+        },
+      },
+    });
+  }
 }
