@@ -55,4 +55,10 @@ export class OrdersService {
       },
     });
   }
+
+  public delete(id: Order['id']): Promise<Order> {
+    return this.prismaService.order.delete({
+      where: { id },
+    });
+  }
 }

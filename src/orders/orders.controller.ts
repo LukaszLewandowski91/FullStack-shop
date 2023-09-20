@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   NotFoundException,
   Param,
@@ -48,5 +49,16 @@ export class OrdersController {
       throw new NotFoundException('Order not found');
     }
     return this.ordersService.getById(id);
+  }
+
+  @Delete('/:id')
+  @UseGuards(AdminAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  async delete(@Param('id', new ParseUUIDPipe()) id: string) {
+    if (!(await this.ordersService.getById(id))) {
+      throw new NotFoundException('Order not found');
+    }
+    await this.ordersService.delete(id);
+    return { success: true };
   }
 }
