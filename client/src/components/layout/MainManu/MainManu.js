@@ -1,5 +1,6 @@
 import {
   AppBar,
+  Badge,
   Box,
   Button,
   Divider,
@@ -8,28 +9,87 @@ import {
   List,
   ListItem,
   ListItemButton,
+  Menu,
+  MenuItem,
   Stack,
   Toolbar,
   Typography,
 } from '@mui/material';
 import CableIcon from '@mui/icons-material/Cable';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { styled } from '@mui/material/styles';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { getUser, loadUserFromCookies } from '../../../redux/usersRedux';
+import { getUser } from '../../../redux/usersRedux';
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
 
 const MainMenu = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const user = useSelector((state) => getUser(state));
+  const navigate = useNavigate();
+  const isMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setMobileOpen((prevState) => !prevState);
+  };
+
+  const handleLogout = () => {
+    setAnchorEl(null);
+    navigate('/logout');
+  };
+
+  const menuId = 'primary-search-account-menu';
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
+      <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+    </Menu>
+  );
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -66,17 +126,60 @@ const MainMenu = (props) => {
         )}
         {user.users && (
           <ListItem disablePadding>
-            <ListItemButton
+            {/* <ListItemButton
               component={Link}
               to="/logout"
               sx={{ textAlign: 'center' }}
             >
               Sign Out
-            </ListItemButton>
+            </ListItemButton> */}
+            <IconButton
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
           </ListItem>
         )}
       </List>
     </Box>
+  );
+
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          size="large"
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
   );
   return (
     <Box sx={{ display: 'flex' }}>
@@ -110,6 +213,11 @@ const MainMenu = (props) => {
             <Button component={Link} to="/" color="inherit">
               Home
             </Button>
+            <IconButton aria-label="cart">
+              <StyledBadge badgeContent={9} color="primary" max={10}>
+                <ShoppingCartIcon />
+              </StyledBadge>
+            </IconButton>
             {!user.users && (
               <Button component={Link} to="/login" color="inherit">
                 Sign In
@@ -120,10 +228,19 @@ const MainMenu = (props) => {
                 Sign Up
               </Button>
             )}
+
             {user.users && (
-              <Button component={Link} to="/logout" color="inherit">
-                Sign Out
-              </Button>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
             )}
           </Stack>
         </Toolbar>
@@ -145,6 +262,7 @@ const MainMenu = (props) => {
           {drawer}
         </Drawer>
       </nav>
+      {renderMenu}
     </Box>
   );
 };
