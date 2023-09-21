@@ -2,7 +2,11 @@ import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 
 const Footer = () => {
   return (
-    <Box sx={{ flexGrow: 1 }} component="footer">
+    <Box
+      sx={{ flexGrow: 1, bottom: 0, width: '100%' }}
+      component="footer"
+      position="absolute"
+    >
       <AppBar position="static" color="transparent">
         <Toolbar>
           <Typography
