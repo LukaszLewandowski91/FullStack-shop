@@ -21,19 +21,16 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  //   let res = await dispatch(loadLoggedUser({ email, password }));
+    let res = await dispatch(loadLoggedUser({ email, password }));
 
-  //   if (res && res.status === 201) {
-  //     setTimeout(() => {
-  //       navigate('/');
-  //     }, 1500);
-  //   }
-  // };
-  const handleSubmit = () => {
-    console.log('Test');
+    if (res && res.status === 201) {
+      setTimeout(() => {
+        navigate('/');
+      }, 1500);
+    }
   };
 
   const avatarStyle = { backgroundColor: '#1bbd7e' };
