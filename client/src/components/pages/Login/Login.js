@@ -57,7 +57,7 @@ const Login = () => {
 
           {request && request.error === 401 && (
             <Alert variant="danger">
-              <Alert.Heading>Zly login lub haslo</Alert.Heading>
+              <Alert.Heading>Incorrect login or password</Alert.Heading>
               <p>Unexpected error... Try again</p>
             </Alert>
           )}

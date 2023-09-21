@@ -28,6 +28,7 @@ export const loadLoggedUser = (userData) => {
         withCredentials: true,
       });
       dispatch(logIn(res.data));
+      localStorage.setItem('login', JSON.stringify(res.data));
       dispatch(endRequest({ name: LOG_IN }));
       return res;
     } catch (e) {
@@ -64,6 +65,7 @@ export const logoutUser = () => {
       await axios.delete(`${API_URL}/auth/logout`, {
         withCredentials: true,
       });
+      localStorage.removeItem('login');
       dispatch(logOut());
     } catch (e) {
       console.log('error', e);
@@ -74,7 +76,7 @@ export const logoutUser = () => {
 const usersReducer = (statePart = initialState, action) => {
   switch (action.type) {
     case LOG_IN:
-      return action.payload;
+      return { ...statePart, users: action.payload };
     case LOG_OUT:
       return initialState;
     case START_REQUEST:
