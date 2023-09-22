@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import CableIcon from '@mui/icons-material/Cable';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import AccountCircle from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { styled } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
@@ -72,10 +72,10 @@ const MainMenu = (props) => {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      // anchorOrigin={{ vertical: 'down', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      // transformOrigin={{ vertical: 'down', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
@@ -126,24 +126,15 @@ const MainMenu = (props) => {
         )}
         {user.users && (
           <ListItem disablePadding>
-            {/* <ListItemButton
-              component={Link}
-              to="/logout"
-              sx={{ textAlign: 'center' }}
-            >
-              Sign Out
-            </ListItemButton> */}
-            <IconButton
-              size="large"
-              edge="end"
+            <ListItemButton
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
+              sx={{ textAlign: 'center' }}
               onClick={handleMobileMenuOpen}
-              color="inherit"
             >
-              <AccountCircle />
-            </IconButton>
+              <AccountCircle /> Profile
+            </ListItemButton>
           </ListItem>
         )}
       </List>
@@ -199,6 +190,8 @@ const MainMenu = (props) => {
             edge="start"
             color="inherit"
             aria-label="logo"
+            component={Link}
+            to="/"
           >
             <CableIcon />
           </IconButton>
@@ -210,9 +203,6 @@ const MainMenu = (props) => {
             spacing={2}
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <Button component={Link} to="/" color="inherit">
-              Home
-            </Button>
             <IconButton aria-label="cart">
               <StyledBadge badgeContent={9} color="primary" max={10}>
                 <ShoppingCartIcon />
