@@ -12,7 +12,6 @@ function App() {
   const dispatch = useDispatch();
 
   const products = useSelector(getProducts);
-  console.log('produkty', products);
   useEffect(() => {
     dispatch(loadProductsRequest());
     dispatch(loadUserFromCookies(JSON.parse(localStorage.getItem('login'))));
