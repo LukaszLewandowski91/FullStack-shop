@@ -16,6 +16,7 @@ import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { AdminAuthGuard } from 'src/auth/admin-auth.guard';
 import { CreateProductDTO } from './dtos/create-product.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+
 import { multerOptions } from 'src/config/multerOptions.config';
 
 @Controller('products')
