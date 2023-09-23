@@ -16,12 +16,17 @@ model Product {
   description String
   price String
   producer String
-  category String
+  category Categories @relation(fields: [categoryId], references: [id])
+  categoryId String @unique
 
   gallery Images[]
   orders OrderDetails[]
 }
-
+model Categories {
+  id String @id @default(uuid())
+  description String @unique
+  products Product?
+}
 model Images {
   id String @id @default(uuid())
   image String
