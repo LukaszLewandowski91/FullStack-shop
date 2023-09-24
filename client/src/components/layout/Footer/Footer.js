@@ -5,7 +5,7 @@ const Footer = () => {
     <Box
       sx={{ flexGrow: 1, bottom: 0, width: '100%' }}
       component="footer"
-      position="absolute"
+      position="block"
     >
       <AppBar position="static" color="transparent">
         <Toolbar>

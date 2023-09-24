@@ -19,7 +19,7 @@ const MainCarousel = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', flexGrow: 1 }}>
+    <Box sx={{ width: '100%', flexGrow: 1, mb: 5 }}>
       <AutoPlaySwipeableViews
         index={activeStep}
         onChangeIndex={handleStepChange}
