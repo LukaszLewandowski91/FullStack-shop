@@ -9,7 +9,7 @@ export class CreateProductDTO {
   @IsNotEmpty()
   @IsString()
   @Length(10, 50)
-  description: string;
+  productDescription: string;
 
   @IsNotEmpty()
   @IsString()
@@ -21,7 +21,7 @@ export class CreateProductDTO {
   producer: string;
 
   @IsNotEmpty()
-  @IsString()
   @IsUUID()
+  @IsString()
   categoryId: string;
 }

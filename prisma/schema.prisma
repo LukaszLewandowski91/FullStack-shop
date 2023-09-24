@@ -10,24 +10,26 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Categories {
+  id String @id @default(uuid())
+  description String @unique
+  image String
+  products Product[]
+} 
+
 model Product {
   id String @id @default(uuid())
   title String @unique
-  description String
+  productDescription String
   price String
   producer String
-  category Categories @relation(fields: [categoryId], references: [id])
-  categoryId String @unique
+  categoryId String
+  category Categories @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   gallery Images[]
   orders OrderDetails[]
 }
-model Categories {
-  id String @id @default(uuid())
-  description String @unique
-  products Product?
-  image String
-}
+
 model Images {
   id String @id @default(uuid())
   image String

@@ -10,10 +10,14 @@ export class ProductsService {
     files: Array<Express.Multer.File>,
     productData: Omit<Product, 'id'>,
   ): Promise<Product> {
+    const { categoryId, ...otherData } = productData;
     try {
       return await this.prismaService.product.create({
         data: {
-          ...productData,
+          ...otherData,
+          category: {
+            connect: { id: categoryId },
+          },
           gallery: {
             create: files.map((file) => ({ image: file.filename })),
           },
@@ -24,6 +28,7 @@ export class ProductsService {
         files.map((file) => {
           fs.unlink(`${process.env.UPLOAD_DIR}/${file.filename}`);
         });
+        console.log(error);
         throw new ConflictException('Product is already exist');
       }
       files.map((file) => {
