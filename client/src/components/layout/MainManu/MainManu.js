@@ -78,6 +78,11 @@ const MainMenu = (props) => {
     navigate('/logout');
   };
 
+  let cart = '';
+  if (localStorage.getItem('cart')) {
+    cart = JSON.parse(localStorage.getItem('cart')).products;
+  }
+
   const menuId = 'primary-search-account-menu';
 
   const renderMenu = (
@@ -103,7 +108,7 @@ const MainMenu = (props) => {
     >
       {categories &&
         categories.map((category) => (
-          <MenuItem onClick={handleCategoryClose}>
+          <MenuItem key={category.id} onClick={handleCategoryClose}>
             {category.description}
           </MenuItem>
         ))}
@@ -241,7 +246,7 @@ const MainMenu = (props) => {
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
             <IconButton aria-label="cart">
-              <StyledBadge badgeContent={9} color="primary" max={10}>
+              <StyledBadge badgeContent={cart.length} color="primary" max={10}>
                 <ShoppingCartIcon />
               </StyledBadge>
             </IconButton>

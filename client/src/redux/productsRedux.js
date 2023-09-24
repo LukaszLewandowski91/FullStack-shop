@@ -25,7 +25,7 @@ export const loadProductsRequest = () => {
 };
 
 /* REDUCER */
-const productsReducer = (statePart = initialState, action = {}) => {
+const productsReducer = (statePart = [], action) => {
   switch (action.type) {
     case LOAD_PRODUCTS:
       return [...action.payload];

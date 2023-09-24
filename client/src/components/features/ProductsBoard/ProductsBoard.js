@@ -1,22 +1,17 @@
-import {
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Divider,
-  Grid,
-  IconButton,
-  Skeleton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import { useSelector } from 'react-redux';
+import { Grid, CircularProgress } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProducts } from '../../../redux/productsRedux';
-
+import { loadProductsRequest } from '../../../redux/productsRedux';
 import ProductCard from '../ProductCard/ProductCard';
+import { useEffect } from 'react';
 const ProductsBoard = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(loadProductsRequest());
+  }, [dispatch]);
+
   const products = useSelector(getProducts);
-  console.log(products);
+
   return (
     <Grid
       container
@@ -25,11 +20,8 @@ const ProductsBoard = () => {
       rowSpacing={1}
       columnSpacing={{ xs: 1, sm: 2, md: 3 }}
     >
-      {!products && <Skeleton />}
-      {products.length !== 0 &&
-        products.map((product) => (
-          <ProductCard key={product.id} {...product} />
-        ))}
+      {products &&
+        products.map((prod) => <ProductCard key={prod.id} {...prod} />)}
     </Grid>
   );
 };

@@ -13,8 +13,6 @@ import Home from './components/pages/Home/Home';
 function App() {
   const dispatch = useDispatch();
 
-  const products = useSelector(getProducts);
-
   useEffect(() => {
     dispatch(loadCategoriesRequest());
     dispatch(loadProductsRequest());
