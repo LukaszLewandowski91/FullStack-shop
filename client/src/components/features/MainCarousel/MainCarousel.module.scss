@@ -1,0 +1,33 @@
+.theme {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 60%;
+  color: white;
+  text-shadow: 3px 3px 20px black;
+}
+
+.btn {
+  display: inline-block;
+  min-width: 160px;
+  margin: 24px auto 0 auto;
+  padding: 16px;
+  border-radius: 5px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border-width: 2px;
+  border-style: solid;
+  background-position: 100% 0;
+  background-size: 300%;
+  transition: all 1s;
+  border-color: #ffffff;
+  color: #ffffff;
+  background-image: linear-gradient(90deg, #ffffff 50%, transparent 50%);
+}
+
+.btn:hover {
+  background-position: 0 100%;
+  color: #0097e6;
+}

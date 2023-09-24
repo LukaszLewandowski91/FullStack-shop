@@ -5,6 +5,7 @@ import { Box } from '@mui/material';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { IMGS_URL } from '../../../config';
+import styles from './MainCarousel.module.scss';
 const MainCarousel = () => {
   const categories = useSelector(getCategories);
 
@@ -12,14 +13,6 @@ const MainCarousel = () => {
   const maxSteps = categories.length;
 
   const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
   const handleStepChange = (step) => {
     setActiveStep(step);
@@ -31,6 +24,7 @@ const MainCarousel = () => {
         index={activeStep}
         onChangeIndex={handleStepChange}
         enableMouseEvents
+        disabled={true}
       >
         {categories.map((category, index) => (
           <div key={category.id}>
@@ -48,6 +42,12 @@ const MainCarousel = () => {
                 alt={category.description}
               />
             ) : null}
+            <div className={styles.theme}>
+              <h1>{category.description}</h1>
+              <a href="#" className={styles.btn}>
+                See more
+              </a>
+            </div>
           </div>
         ))}
       </AutoPlaySwipeableViews>

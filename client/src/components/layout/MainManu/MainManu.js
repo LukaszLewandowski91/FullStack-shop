@@ -24,7 +24,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { getUser } from '../../../redux/usersRedux';
-
+import { getCategories } from '../../../redux/categoriesRedux';
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     right: -3,
@@ -38,10 +38,13 @@ const MainMenu = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const user = useSelector((state) => getUser(state));
+  const categories = useSelector(getCategories);
   const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
+  const isCategoryOpen = Boolean(categoryAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
@@ -57,11 +60,19 @@ const MainMenu = (props) => {
     handleMobileMenuClose();
   };
 
+  const handleCategoryClose = () => {
+    setCategoryAnchorEl(null);
+    handleMobileMenuClose();
+  };
+
   const handleMobileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
     setMobileOpen((prevState) => !prevState);
   };
-
+  const handleMobileCategoryOpen = (event) => {
+    setCategoryAnchorEl(event.currentTarget);
+    setMobileOpen((prevState) => !prevState);
+  };
   const handleLogout = () => {
     setAnchorEl(null);
     navigate('/logout');
@@ -72,15 +83,30 @@ const MainMenu = (props) => {
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      // anchorOrigin={{ vertical: 'down', horizontal: 'right' }}
       id={menuId}
       keepMounted
-      // transformOrigin={{ vertical: 'down', horizontal: 'right' }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>My Orders</MenuItem>
       <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
+    </Menu>
+  );
+  const categoryId = 'primary-categories-menu';
+  const renderCategoriesMenu = (
+    <Menu
+      anchorEl={categoryAnchorEl}
+      id={categoryId}
+      keepMounted
+      open={isCategoryOpen}
+      onClose={handleCategoryClose}
+    >
+      {categories &&
+        categories.map((category) => (
+          <MenuItem onClick={handleCategoryClose}>
+            {category.description}
+          </MenuItem>
+        ))}
     </Menu>
   );
 
@@ -100,6 +126,17 @@ const MainMenu = (props) => {
         <ListItem disablePadding>
           <ListItemButton component={Link} to="/" sx={{ textAlign: 'center' }}>
             Home
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton
+            aria-label="account of current user"
+            aria-controls={categoryId}
+            aria-haspopup="true"
+            sx={{ textAlign: 'center' }}
+            onClick={handleMobileCategoryOpen}
+          >
+            Categories
           </ListItemButton>
         </ListItem>
         {!user.users && (
@@ -253,6 +290,7 @@ const MainMenu = (props) => {
         </Drawer>
       </nav>
       {renderMenu}
+      {renderCategoriesMenu}
     </Box>
   );
 };
