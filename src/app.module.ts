@@ -15,9 +15,17 @@ import { ProductsModule } from './products/products.module';
 import { OrdersModule } from './orders/orders.module';
 import { CategoriesModule } from './categories/categories.module';
 import configuration from './config/configuration';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule
+      .forRoot
+      // {
+      //   rootPath: join(__dirname, '../../', 'client', 'build'),
+      // },
+      (),
     UsersModule,
     AuthModule,
     PrismaModule,

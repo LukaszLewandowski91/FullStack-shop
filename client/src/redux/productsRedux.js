@@ -16,7 +16,7 @@ export const loadProductsRequest = () => {
       let res = await axios.get(`${API_URL}/products`, {
         withCredentials: true,
       });
-      console.log('tab', res.data);
+
       dispatch(loadProducts(res.data));
     } catch (e) {
       console.log(e);

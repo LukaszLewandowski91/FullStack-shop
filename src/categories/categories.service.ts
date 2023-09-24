@@ -37,7 +37,13 @@ export class CategoriesService {
     });
   }
 
-  public delete(id: Categories['id']): Promise<Categories> {
+  public async delete(id: Categories['id']): Promise<Categories> {
+    const category = await this.prismaService.categories.findUnique({
+      where: { id },
+    });
+
+    fs.unlink(`${process.env.UPLOAD_DIR}/${category.image}`);
+
     return this.prismaService.categories.delete({
       where: { id },
     });

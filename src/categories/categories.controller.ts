@@ -24,8 +24,6 @@ export class CategoriesController {
   constructor(private categoriesService: CategoriesService) {}
 
   @Get('/')
-  @UseGuards(AdminAuthGuard)
-  @UseGuards(JwtAuthGuard)
   getAll(): any {
     return this.categoriesService.getAll();
   }
