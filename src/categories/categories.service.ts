@@ -1,22 +1,28 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { Categories } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import * as fs from 'fs/promises';
 @Injectable()
 export class CategoriesService {
   constructor(private prismaService: PrismaService) {}
 
   public async create(
-    categoryData: Omit<Categories, 'id'>,
+    image: Array<Express.Multer.File>,
+    categoryData: Omit<Categories, 'id' | 'image'>,
   ): Promise<Categories> {
     try {
       return await this.prismaService.categories.create({
-        data: categoryData,
+        data: {
+          description: categoryData.description,
+          image: image[0].filename,
+        },
       });
     } catch (error) {
       if (error.code === 'P2002') {
+        fs.unlink(`${process.env.UPLOAD_DIR}/${image[0].filename}`);
         throw new ConflictException('Category is already exist');
       }
+      fs.unlink(`${process.env.UPLOAD_DIR}/${image[0].filename}`);
       throw error;
     }
   }

@@ -26,6 +26,7 @@ model Categories {
   id String @id @default(uuid())
   description String @unique
   products Product?
+  image String
 }
 model Images {
   id String @id @default(uuid())

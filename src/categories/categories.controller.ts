@@ -7,12 +7,17 @@ import {
   Param,
   ParseUUIDPipe,
   Post,
+  UploadedFile,
+  UploadedFiles,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
 import { AdminAuthGuard } from 'src/auth/admin-auth.guard';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreateCategoryDTO } from './dtos/create-category.dto';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/config/multerOptions.config';
 
 @Controller('categories')
 export class CategoriesController {
@@ -49,7 +54,11 @@ export class CategoriesController {
   @Post('/')
   @UseGuards(AdminAuthGuard)
   @UseGuards(JwtAuthGuard)
-  async create(@Body() categoryData: CreateCategoryDTO) {
-    return this.categoriesService.create(categoryData);
+  @UseInterceptors(FilesInterceptor('image', 2, multerOptions))
+  async create(
+    @UploadedFiles() image: Array<Express.Multer.File>,
+    @Body() categoryData: CreateCategoryDTO,
+  ) {
+    return this.categoriesService.create(image, categoryData);
   }
 }
