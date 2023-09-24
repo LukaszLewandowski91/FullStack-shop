@@ -17,7 +17,7 @@ export const loadCategoriesRequest = () => {
       let res = await axios.get(`${API_URL}/categories`, {
         withCredentials: true,
       });
-      console.log('categories', res.data);
+
       dispatch(loadCategories(res.data));
     } catch (e) {
       console.log(e);

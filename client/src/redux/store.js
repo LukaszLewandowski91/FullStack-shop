@@ -4,11 +4,13 @@ import initialState from './initialState';
 import thunk from 'redux-thunk';
 import productsReducer from './productsRedux';
 import categoriesReducer from './categoriesRedux';
+import cartReducer from './cartRedux';
 
 const subreducers = {
   user: usersReducer,
   product: productsReducer,
   categories: categoriesReducer,
+  cart: cartReducer,
 };
 
 const reducer = combineReducers(subreducers);

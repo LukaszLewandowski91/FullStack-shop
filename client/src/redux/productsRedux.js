@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../config';
-import initialState from './initialState';
+
 export const getProducts = ({ product }) => product;
 
 const reducerName = 'products';
@@ -16,7 +16,7 @@ export const loadProductsRequest = () => {
       let res = await axios.get(`${API_URL}/products`, {
         withCredentials: true,
       });
-      console.log('tab', res.data);
+
       dispatch(loadProducts(res.data));
     } catch (e) {
       console.log(e);

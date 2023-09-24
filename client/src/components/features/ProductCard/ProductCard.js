@@ -12,18 +12,42 @@ import {
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { IMGS_URL } from '../../../config';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart, editCart, getCart } from '../../../redux/cartRedux';
 const ProductCard = ({ ...product }) => {
+  const dispatch = useDispatch();
+
   const cart = {
     products: [],
   };
+
   const handleSubmit = () => {
-    const productInCart = {
-      id: product.id,
-      amount: 1,
-      notes: '',
-    };
-    cart.products.push(productInCart);
-    localStorage.setItem('cart', JSON.stringify(cart));
+    const local = JSON.parse(localStorage.getItem('cart'));
+    if (local !== null) {
+      const prodInLocal = local.products.find((e) => e.id === product.id);
+      if (prodInLocal) {
+        prodInLocal.amount++;
+        dispatch(editCart(prodInLocal));
+      } else {
+        const productToLocal = {
+          id: product.id,
+          amount: 1,
+          notes: '',
+        };
+        dispatch(addToCart(productToLocal));
+        local.products.push(productToLocal);
+      }
+      localStorage.setItem('cart', JSON.stringify(local));
+    } else {
+      const productToLocal = {
+        id: product.id,
+        amount: 1,
+        notes: '',
+      };
+      dispatch(addToCart(productToLocal));
+      cart.products.push(productToLocal);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
   };
   return (
     <Grid
@@ -31,13 +55,16 @@ const ProductCard = ({ ...product }) => {
       xs={12}
       sm={6}
       md={3}
-      sx={{ maxWidth: 300, ml: 2, boxShadow: '3px 3px 20px black' }}
+      sx={{
+        width: '100%',
+        maxWidth: 100,
+      }}
     >
-      <Card sx={{ maxWidth: 300 }}>
+      <Card sx={{ width: 300, boxShadow: '3px 3px 50px black' }}>
         <CardMedia
           component="img"
           alt={product.title}
-          height="200"
+          height="250"
           sx={{ objectFit: 'cover' }}
           image={`${IMGS_URL}/${product.gallery[1].image}`}
         />

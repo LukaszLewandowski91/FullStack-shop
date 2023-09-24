@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { loadUserFromCookies } from './redux/usersRedux';
 import MainLayout from './components/layout/MainLayout/MainLayout';
-import { getProducts, loadProductsRequest } from './redux/productsRedux';
+import { loadProductsRequest } from './redux/productsRedux';
 import { loadCategoriesRequest } from './redux/categoriesRedux';
 import Home from './components/pages/Home/Home';
 

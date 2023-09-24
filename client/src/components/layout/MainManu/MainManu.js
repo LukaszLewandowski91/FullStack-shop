@@ -21,10 +21,11 @@ import AccountCircle from '@mui/icons-material/AccountCircleOutlined';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { styled } from '@mui/material/styles';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../../redux/usersRedux';
 import { getCategories } from '../../../redux/categoriesRedux';
+import { addToCart, getCart } from '../../../redux/cartRedux';
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     right: -3,
@@ -46,7 +47,7 @@ const MainMenu = (props) => {
   const isMenuOpen = Boolean(anchorEl);
   const isCategoryOpen = Boolean(categoryAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
+  const dispatch = useDispatch();
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -78,10 +79,23 @@ const MainMenu = (props) => {
     navigate('/logout');
   };
 
-  let cart = '';
-  if (localStorage.getItem('cart')) {
-    cart = JSON.parse(localStorage.getItem('cart')).products;
-  }
+  const cart = useSelector(getCart);
+
+  useEffect(() => {
+    if (localStorage.getItem('cart')) {
+      const productsFromLocal = JSON.parse(
+        localStorage.getItem('cart'),
+      ).products;
+      productsFromLocal.map((prod) => {
+        dispatch(addToCart(prod));
+      });
+      console.log(cart);
+    }
+  }, [dispatch]);
+  // if (localStorage.getItem('cart')) {
+  //   const productsInLocal = JSON.parse(localStorage.getItem('cart')).products;
+  //   console.log(productsInLocal);
+  // }
 
   const menuId = 'primary-search-account-menu';
 
