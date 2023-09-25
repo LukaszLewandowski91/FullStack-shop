@@ -52,16 +52,7 @@ const ProductCard = ({ ...product }) => {
     }
   };
   return (
-    <Grid
-      item
-      xs={12}
-      sm={6}
-      md={3}
-      sx={{
-        width: '100%',
-        maxWidth: 100,
-      }}
-    >
+    <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ width: 300, boxShadow: '3px 3px 50px black' }}>
         <CardMedia
           component="img"

@@ -17,8 +17,8 @@ const ProductsBoard = () => {
       container
       mb={5}
       pl={3}
-      rowSpacing={1}
-      columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+      spacing={{ xs: 2, md: 3 }}
+      columns={{ xs: 1, sm: 2, md: 12 }}
     >
       {products &&
         products.map((prod) => <ProductCard key={prod.id} {...prod} />)}
