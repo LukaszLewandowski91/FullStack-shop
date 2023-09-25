@@ -15,7 +15,7 @@ const cartReducer = (statePart = [], action) => {
       return [...statePart, { ...action.payload }];
     case EDIT_CART:
       return statePart.map((e) =>
-        e.id === action.payload.id ? { ...e, ...action.payload.amount } : e,
+        e.id === action.payload.id ? { ...e, ...action.payload } : e,
       );
     default:
       return statePart;

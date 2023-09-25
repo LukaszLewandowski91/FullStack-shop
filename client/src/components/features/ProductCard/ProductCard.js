@@ -12,8 +12,9 @@ import {
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { IMGS_URL } from '../../../config';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart, editCart, getCart } from '../../../redux/cartRedux';
+import { useDispatch } from 'react-redux';
+import { addToCart, editCart } from '../../../redux/cartRedux';
+import { Link } from 'react-router-dom';
 const ProductCard = ({ ...product }) => {
   const dispatch = useDispatch();
 
@@ -27,6 +28,7 @@ const ProductCard = ({ ...product }) => {
       const prodInLocal = local.products.find((e) => e.id === product.id);
       if (prodInLocal) {
         prodInLocal.amount++;
+        console.log(prodInLocal);
         dispatch(editCart(prodInLocal));
       } else {
         const productToLocal = {
@@ -84,7 +86,11 @@ const ProductCard = ({ ...product }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title="Read more">
-            <IconButton aria-label="read more">
+            <IconButton
+              aria-label="read more"
+              component={Link}
+              to={`/product/${product.id}`}
+            >
               <ReadMoreIcon />
             </IconButton>
           </Tooltip>

@@ -3,12 +3,14 @@ import {
   Badge,
   Box,
   Button,
+  Collapse,
   Divider,
   Drawer,
   IconButton,
   List,
   ListItem,
   ListItemButton,
+  ListItemText,
   Menu,
   MenuItem,
   Stack,
@@ -26,6 +28,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../../redux/usersRedux';
 import { getCategories } from '../../../redux/categoriesRedux';
 import { addToCart, getCart } from '../../../redux/cartRedux';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
     right: -3,
@@ -41,17 +45,22 @@ const MainMenu = (props) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
   const user = useSelector((state) => getUser(state));
   const categories = useSelector(getCategories);
   const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
   const isCategoryOpen = Boolean(categoryAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
   const dispatch = useDispatch();
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
+  const handleMobileCategoryOpen = (event) => {
+    setCategoryAnchorEl(event.currentTarget);
+  };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -68,14 +77,15 @@ const MainMenu = (props) => {
 
   const handleMobileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    setMobileOpen((prevState) => !prevState);
+    // setMobileOpen((prevState) => !prevState);
   };
-  const handleMobileCategoryOpen = (event) => {
-    setCategoryAnchorEl(event.currentTarget);
-    setMobileOpen((prevState) => !prevState);
+
+  const handleOpen = () => {
+    setOpen(!open);
   };
   const handleLogout = () => {
     setAnchorEl(null);
+    handleDrawerToggle();
     navigate('/logout');
   };
 
@@ -89,13 +99,8 @@ const MainMenu = (props) => {
       productsFromLocal.map((prod) => {
         dispatch(addToCart(prod));
       });
-      console.log(cart);
     }
   }, [dispatch]);
-  // if (localStorage.getItem('cart')) {
-  //   const productsInLocal = JSON.parse(localStorage.getItem('cart')).products;
-  //   console.log(productsInLocal);
-  // }
 
   const menuId = 'primary-search-account-menu';
 
@@ -136,34 +141,45 @@ const MainMenu = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         Electronic Shop
       </Typography>
       <Divider />
       <List>
         <ListItem disablePadding>
-          <ListItemButton component={Link} to="/" sx={{ textAlign: 'center' }}>
+          <ListItemButton
+            component={Link}
+            to="/"
+            sx={{ textAlign: 'center' }}
+            onClick={handleDrawerToggle}
+          >
             Home
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton
-            aria-label="account of current user"
-            aria-controls={categoryId}
-            aria-haspopup="true"
-            sx={{ textAlign: 'center' }}
-            onClick={handleMobileCategoryOpen}
-          >
+          <ListItemButton onClick={handleOpen}>
             Categories
+            {open ? <ExpandLess /> : <ExpandMore />}
           </ListItemButton>
         </ListItem>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            {categories &&
+              categories.map((category) => (
+                <ListItemButton key={category.id} sx={{ pl: 4 }}>
+                  <ListItemText primary={category.description} />
+                </ListItemButton>
+              ))}
+          </List>
+        </Collapse>
         {!user.users && (
           <ListItem disablePadding>
             <ListItemButton
               component={Link}
               to="/login"
               sx={{ textAlign: 'center' }}
+              onClick={handleDrawerToggle}
             >
               Sign In
             </ListItemButton>
@@ -175,6 +191,7 @@ const MainMenu = (props) => {
               component={Link}
               to="/register"
               sx={{ textAlign: 'center' }}
+              onClick={handleDrawerToggle}
             >
               Sign Up
             </ListItemButton>

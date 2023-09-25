@@ -2,6 +2,8 @@ import axios from 'axios';
 import { API_URL } from '../config';
 
 export const getProducts = ({ product }) => product;
+export const getProductById = ({ product }, id) =>
+  product.find((prod) => prod.id === id);
 
 const reducerName = 'products';
 const createActionName = (name) => `app/${reducerName}/${name}`;
