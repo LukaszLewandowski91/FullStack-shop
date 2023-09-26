@@ -1,22 +1,80 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getProductById } from '../../../redux/productsRedux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import NotFound from '../../pages/NotFound/NotFound';
 import {
   Box,
+  Button,
+  Divider,
   Grid,
   ImageList,
   ImageListItem,
   Paper,
+  TextField,
   Typography,
 } from '@mui/material';
 import { IMGS_URL } from '../../../config';
 
+import { editCart, addToCart } from '../../../redux/cartRedux';
+import { styled } from '@mui/material/styles';
+
 const ProductDetails = () => {
+  const dispatch = useDispatch();
   const { id } = useParams();
   const product = useSelector((state) => getProductById(state, id));
   const [activeImage, setActiveImage] = useState(product.gallery[0].image);
+  const [value, setValue] = useState(1);
+  const [notes, setNotes] = useState('');
+
+  const cart = {
+    products: [],
+  };
+
+  const handleSubmit = () => {
+    const local = JSON.parse(localStorage.getItem('cart'));
+    if (local !== null) {
+      const prodInLocal = local.products.find((e) => e.id === product.id);
+      if (prodInLocal) {
+        prodInLocal.amount = prodInLocal.amount + parseInt(value);
+        console.log(prodInLocal);
+        dispatch(editCart(prodInLocal));
+      } else {
+        const productToLocal = {
+          id: product.id,
+          amount: value,
+          notes: notes,
+        };
+        dispatch(addToCart(productToLocal));
+        local.products.push(productToLocal);
+      }
+      localStorage.setItem('cart', JSON.stringify(local));
+    } else {
+      const productToLocal = {
+        id: product.id,
+        amount: value,
+        notes: notes,
+      };
+      dispatch(addToCart(productToLocal));
+      cart.products.push(productToLocal);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+  };
+
+  console.log(notes);
+
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: 'white',
+    backgroundColor: 'black',
+    fontFamily: 'Poppins',
+    textTransform: 'uppercase',
+    borderRadius: 0,
+    height: 55,
+    width: 200,
+    '&:hover': {
+      backgroundColor: '#D10101',
+    },
+  }));
 
   return (
     <Grid
@@ -103,6 +161,26 @@ const ProductDetails = () => {
                   {product.category.description}
                 </Typography>
               </Typography>
+              <Divider sx={{ mt: 2, mb: 2 }} />
+              <TextField
+                label="Comments for order"
+                variant="outlined"
+                sx={{ mb: 2, width: 400 }}
+                onChange={(e) => setNotes(e.target.value)}
+                value={notes}
+              />
+              <Box display="fles" alignItems="center">
+                <TextField
+                  id="amount"
+                  type="number"
+                  value={value}
+                  InputProps={{ inputProps: { min: 1, max: 10 } }}
+                  sx={{ mr: 3 }}
+                  onChange={(e) => setValue(e.target.value)}
+                />
+
+                <ColorButton onClick={handleSubmit}>Add to cart</ColorButton>
+              </Box>
             </Paper>
           </Grid>
         </Grid>
