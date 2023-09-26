@@ -10,6 +10,7 @@ import { loadProductsRequest } from './redux/productsRedux';
 import { loadCategoriesRequest } from './redux/categoriesRedux';
 import Home from './components/pages/Home/Home';
 import ProductDetails from './components/features/ProductDetails/ProductDetails';
+import ShoppingCart from './components/features/ShoppingCart/ShoppingCart';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,6 +29,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+        <Route path="/cart" element={<ShoppingCart />} />
       </Routes>
     </MainLayout>
   );

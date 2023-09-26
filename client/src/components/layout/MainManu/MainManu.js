@@ -58,9 +58,9 @@ const MainMenu = (props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMobileCategoryOpen = (event) => {
-    setCategoryAnchorEl(event.currentTarget);
-  };
+  // const handleMobileCategoryOpen = (event) => {
+  //   setCategoryAnchorEl(event.currentTarget);
+  // };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -77,7 +77,6 @@ const MainMenu = (props) => {
 
   const handleMobileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-    // setMobileOpen((prevState) => !prevState);
   };
 
   const handleOpen = () => {
@@ -276,7 +275,7 @@ const MainMenu = (props) => {
             spacing={2}
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <IconButton aria-label="cart">
+            <IconButton aria-label="cart" component={Link} to="/cart">
               <StyledBadge badgeContent={cart.length} color="primary" max={10}>
                 <ShoppingCartIcon />
               </StyledBadge>

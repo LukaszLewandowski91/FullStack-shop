@@ -3,22 +3,12 @@ import { AppBar, Box, Toolbar, Typography } from '@mui/material';
 const Footer = () => {
   return (
     <Box
-      sx={{ flexGrow: 1, bottom: 0, width: '100%' }}
+      sx={{ marginTop: 'auto', width: '100%', height: '50px' }}
       component="footer"
-      position="block"
     >
-      <AppBar position="static" color="transparent">
-        <Toolbar>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, mt: 5 }}
-            textAlign="center"
-          >
-            Łukasz Lewandowski ShopApp
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <Typography variant="h6" sx={{ flexGrow: 1 }} textAlign="center">
+        Łukasz Lewandowski ShopApp
+      </Typography>
     </Box>
   );
 };
