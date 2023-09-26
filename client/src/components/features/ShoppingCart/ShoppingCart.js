@@ -11,10 +11,12 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  TableBody,
 } from '@mui/material';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
 import { styled } from '@mui/material/styles';
 import { Link } from 'react-router-dom';
+import ProductCart from '../ProductCart/ProductCart';
 
 const ShoppingCart = () => {
   const cart = useSelector(getCart);
@@ -80,11 +82,17 @@ const ShoppingCart = () => {
                 <TableRow>
                   <TableCell>Product Name</TableCell>
                   <TableCell align="right">Price</TableCell>
-                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell align="center">Quantity</TableCell>
                   <TableCell align="right">Subtotal</TableCell>
+                  <TableCell align="right">Notes</TableCell>
                   <TableCell align="right"></TableCell>
                 </TableRow>
               </TableHead>
+              <TableBody>
+                {cart.map((item) => (
+                  <ProductCart key={item.id} {...item} />
+                ))}
+              </TableBody>
             </Table>
           </TableContainer>
         </Box>
