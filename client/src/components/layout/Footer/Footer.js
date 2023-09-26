@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 const Footer = () => {
   return (
@@ -7,7 +7,7 @@ const Footer = () => {
       component="footer"
     >
       <Typography variant="h6" sx={{ flexGrow: 1 }} textAlign="center">
-        Łukasz Lewandowski ShopApp
+        &copy; Łukasz Lewandowski ShopApp &reg;
       </Typography>
     </Box>
   );
