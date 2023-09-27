@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     dispatch(loadCategoriesRequest());
-    dispatch(loadProductsRequest());
+    // dispatch(loadProductsRequest());
     dispatch(loadUserFromCookies(JSON.parse(localStorage.getItem('login'))));
   }, [dispatch]);
 

@@ -37,7 +37,7 @@ const ProductDetails = () => {
       const prodInLocal = local.products.find((e) => e.id === product.id);
       if (prodInLocal) {
         prodInLocal.amount = prodInLocal.amount + parseInt(value);
-        console.log(prodInLocal);
+        prodInLocal.notes = notes;
         dispatch(editCart(prodInLocal));
       } else {
         const productToLocal = {
