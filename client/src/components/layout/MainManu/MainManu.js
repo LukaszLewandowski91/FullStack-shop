@@ -93,9 +93,6 @@ const MainMenu = (props) => {
   useEffect(() => {
     const local = JSON.parse(localStorage.getItem('cart'));
     if (local !== null) {
-      // const productsFromLocal = JSON.parse(
-      //   localStorage.getItem('cart'),
-      // ).products;
       local.products.map((prod) => {
         dispatch(addToCart(prod));
       });

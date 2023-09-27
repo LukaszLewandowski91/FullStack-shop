@@ -110,6 +110,9 @@ const ShoppingCart = () => {
               </TableBody>
             </Table>
           </TableContainer>
+          <ColorButton component={Link} to="/order" sx={{ mt: 5 }}>
+            Order
+          </ColorButton>
         </Box>
       )}
     </Grid>

@@ -34,7 +34,6 @@ const MainCarousel = () => {
                 sx={{
                   height: 600,
                   display: 'block',
-                  // maxWidth: 1280,
                   overflow: 'hidden',
                   width: '100%',
                 }}

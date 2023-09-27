@@ -6,18 +6,17 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { loadUserFromCookies } from './redux/usersRedux';
 import MainLayout from './components/layout/MainLayout/MainLayout';
-import { loadProductsRequest } from './redux/productsRedux';
 import { loadCategoriesRequest } from './redux/categoriesRedux';
 import Home from './components/pages/Home/Home';
 import ProductDetails from './components/features/ProductDetails/ProductDetails';
 import ShoppingCart from './components/features/ShoppingCart/ShoppingCart';
+import OrderSummary from './components/features/OrderSummary/OrderSummary';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadCategoriesRequest());
-    // dispatch(loadProductsRequest());
     dispatch(loadUserFromCookies(JSON.parse(localStorage.getItem('login'))));
   }, [dispatch]);
 
@@ -30,6 +29,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/product/:id" element={<ProductDetails />} />
         <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/order" element={<OrderSummary />} />
       </Routes>
     </MainLayout>
   );

@@ -1,6 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductById } from '../../../redux/productsRedux';
-import { TableRow, TableCell, TextField, IconButton } from '@mui/material';
+import {
+  TableRow,
+  TableCell,
+  TextField,
+  IconButton,
+  Tooltip,
+} from '@mui/material';
 import { useState } from 'react';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
@@ -143,15 +149,17 @@ const ProductCart = (props) => {
             <RemoveIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={() => removeFromCart(props.id)}>
-            <HighlightOffIcon
-              sx={{
-                '& :first-of-type': {
-                  color: '#D10101',
-                },
-              }}
-            />
-          </IconButton>
+          <Tooltip title="Remove product">
+            <IconButton onClick={() => removeFromCart(props.id)}>
+              <HighlightOffIcon
+                sx={{
+                  '& :first-of-type': {
+                    color: '#D10101',
+                  },
+                }}
+              />
+            </IconButton>
+          </Tooltip>
         )}
 
         <TextField
@@ -189,15 +197,17 @@ const ProductCart = (props) => {
         />
       </TableCell>
       <TableCell align="right">
-        <IconButton onClick={() => removeFromCart(props.id)}>
-          <BackspaceIcon
-            sx={{
-              '& :first-of-type': {
-                color: '#D10101',
-              },
-            }}
-          />
-        </IconButton>
+        <Tooltip title="Remove product">
+          <IconButton onClick={() => removeFromCart(props.id)}>
+            <BackspaceIcon
+              sx={{
+                '& :first-of-type': {
+                  color: '#D10101',
+                },
+              }}
+            />
+          </IconButton>
+        </Tooltip>
       </TableCell>
     </TableRow>
   );

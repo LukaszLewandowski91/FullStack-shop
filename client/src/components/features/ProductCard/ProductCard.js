@@ -8,6 +8,8 @@ import {
   CardContent,
   Typography,
   IconButton,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import ReadMoreIcon from '@mui/icons-material/ReadMore';
@@ -15,9 +17,10 @@ import { IMGS_URL } from '../../../config';
 import { useDispatch } from 'react-redux';
 import { addToCart, editCart } from '../../../redux/cartRedux';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 const ProductCard = ({ ...product }) => {
   const dispatch = useDispatch();
-
+  const [status, setStatus] = useState(false);
   const cart = {
     products: [],
   };
@@ -31,6 +34,7 @@ const ProductCard = ({ ...product }) => {
         prodInLocal.amount++;
         console.log(prodInLocal);
         dispatch(editCart(prodInLocal));
+        setStatus(true);
       } else {
         const productToLocal = {
           id: product.id,
@@ -39,6 +43,7 @@ const ProductCard = ({ ...product }) => {
         };
         dispatch(addToCart(productToLocal));
         local.products.push(productToLocal);
+        setStatus(true);
       }
       localStorage.setItem('cart', JSON.stringify(local));
     } else {
@@ -50,7 +55,12 @@ const ProductCard = ({ ...product }) => {
       dispatch(addToCart(productToLocal));
       cart.products.push(productToLocal);
       localStorage.setItem('cart', JSON.stringify(cart));
+      setStatus(true);
     }
+  };
+
+  const handleClose = () => {
+    setStatus(false);
   };
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -88,6 +98,16 @@ const ProductCard = ({ ...product }) => {
           </Tooltip>
         </CardActions>
       </Card>
+      <Snackbar open={status} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          variant="filled"
+          onClose={handleClose}
+          severity="success"
+          sx={{ width: '100%' }}
+        >
+          Product add to cart
+        </Alert>
+      </Snackbar>
     </Grid>
   );
 };
