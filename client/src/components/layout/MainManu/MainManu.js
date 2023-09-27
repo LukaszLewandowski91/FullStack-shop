@@ -117,22 +117,22 @@ const MainMenu = (props) => {
     </Menu>
   );
   const categoryId = 'primary-categories-menu';
-  const renderCategoriesMenu = (
-    <Menu
-      anchorEl={categoryAnchorEl}
-      id={categoryId}
-      keepMounted
-      open={isCategoryOpen}
-      onClose={handleCategoryClose}
-    >
-      {categories &&
-        categories.map((category) => (
-          <MenuItem key={category.id} onClick={handleCategoryClose}>
-            {category.description}
-          </MenuItem>
-        ))}
-    </Menu>
-  );
+  // const renderCategoriesMenu = (
+  //   <Menu
+  //     anchorEl={categoryAnchorEl}
+  //     id={categoryId}
+  //     keepMounted
+  //     open={isCategoryOpen}
+  //     onClose={handleCategoryClose}
+  //   >
+  //     {categories &&
+  //       categories.map((category) => (
+  //         <MenuItem key={category.id} onClick={handleCategoryClose}>
+  //           {category.description}
+  //         </MenuItem>
+  //       ))}
+  //   </Menu>
+  // );
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -271,16 +271,21 @@ const MainMenu = (props) => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Electronic Shop
           </Typography>
+          <IconButton
+            aria-label="cart"
+            component={Link}
+            to="/cart"
+            sx={{ mr: 2 }}
+          >
+            <StyledBadge badgeContent={cart.length} color="primary" max={10}>
+              <ShoppingCartIcon />
+            </StyledBadge>
+          </IconButton>
           <Stack
             direction="row"
             spacing={2}
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <IconButton aria-label="cart" component={Link} to="/cart">
-              <StyledBadge badgeContent={cart.length} color="primary" max={10}>
-                <ShoppingCartIcon />
-              </StyledBadge>
-            </IconButton>
             {!user.users && (
               <Button component={Link} to="/login" color="inherit">
                 Sign In
@@ -326,7 +331,7 @@ const MainMenu = (props) => {
         </Drawer>
       </nav>
       {renderMenu}
-      {renderCategoriesMenu}
+      {/* {renderCategoriesMenu} */}
     </Box>
   );
 };

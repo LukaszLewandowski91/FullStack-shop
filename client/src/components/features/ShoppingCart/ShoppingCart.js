@@ -50,7 +50,7 @@ const ShoppingCart = () => {
       {cart.length === 0 ? (
         <Box
           sx={{
-            width: 500,
+            width: { xs: 400, sm: 800, md: 1000 },
             height: 500,
             display: 'flex',
             justifyContent: 'center',
@@ -59,8 +59,12 @@ const ShoppingCart = () => {
             flexDirection: 'column',
           }}
         >
-          <ShoppingBagOutlinedIcon sx={{ fontSize: 300, color: 'gray' }} />
-          <Typography variant="h3">Your cart is empty.</Typography>
+          <ShoppingBagOutlinedIcon
+            sx={{ fontSize: { xs: 120, sm: 200, md: 300 }, color: 'gray' }}
+          />
+          <Typography variant="h3" sx={{ fontSize: { xs: 30 } }}>
+            Your cart is empty.
+          </Typography>
           <ColorButton sx={{ mt: 5 }} component={Link} to="/">
             return to shop
           </ColorButton>
@@ -68,14 +72,18 @@ const ShoppingCart = () => {
       ) : (
         <Box
           sx={{
-            minWidth: 800,
+            width: { xs: 400, sm: 800, md: 1000 },
             height: 500,
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
             marginTop: 'auto',
           }}
         >
+          <Typography variant="h3" fontFamily="Poppins" marginBottom={5}>
+            Your shopping cart
+          </Typography>
           <TableContainer component={Paper} elevation={0}>
             <Table sx={{}} aria-label="cart table">
               <TableHead>
@@ -84,7 +92,14 @@ const ShoppingCart = () => {
                   <TableCell align="right">Price</TableCell>
                   <TableCell align="center">Quantity</TableCell>
                   <TableCell align="right">Subtotal</TableCell>
-                  <TableCell align="right">Notes</TableCell>
+                  <TableCell
+                    align="center"
+                    sx={{
+                      display: { xs: 'none', sm: 'table-cell' },
+                    }}
+                  >
+                    Notes
+                  </TableCell>
                   <TableCell align="right"></TableCell>
                 </TableRow>
               </TableHead>

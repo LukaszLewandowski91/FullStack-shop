@@ -176,7 +176,10 @@ const ProductCart = (props) => {
         </IconButton>
       </TableCell>
       <TableCell align="right">{countingCart(product.price, amount)}</TableCell>
-      <TableCell align="right">
+      <TableCell
+        align="right"
+        sx={{ display: { xs: 'none', sm: 'table-cell' } }}
+      >
         <TextField
           id="notes"
           type="text"

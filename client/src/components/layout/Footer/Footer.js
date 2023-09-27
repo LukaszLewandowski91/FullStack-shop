@@ -6,7 +6,7 @@ const Footer = () => {
       sx={{ marginTop: 'auto', width: '100%', height: '50px' }}
       component="footer"
     >
-      <Typography variant="h6" sx={{ flexGrow: 1 }} textAlign="center">
+      <Typography variant="h6" sx={{ flexGrow: 1, mt: 10 }} textAlign="center">
         &copy; Łukasz Lewandowski ShopApp &reg;
       </Typography>
     </Box>

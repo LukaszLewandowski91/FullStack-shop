@@ -101,7 +101,7 @@ const ProductDetails = () => {
           >
             <Box component="div" display="flex">
               <ImageList
-                sx={{ width: 100, height: 300 }}
+                sx={{ display: { xs: 'none' }, width: 100, height: 300 }}
                 cols={1}
                 rowHeight={100}
               >
@@ -127,8 +127,11 @@ const ProductDetails = () => {
               sx={{ width: 300, height: 300 }}
             />
           </Grid>
-          <Grid item xs={12} md={6} sx={{ height: '90%', width: '50%' }}>
-            <Paper sx={{ width: '75%', height: '100%', p: 2 }} elevation={2}>
+          <Grid item xs={12} md={6} display="block" mb="20px">
+            <Paper
+              sx={{ width: { xs: '100%', md: '75%' }, height: '100%', p: 2 }}
+              elevation={2}
+            >
               <Typography
                 variant="h3"
                 fontFamily="Poppins"
@@ -165,7 +168,7 @@ const ProductDetails = () => {
               <TextField
                 label="Comments for order"
                 variant="outlined"
-                sx={{ mb: 2, width: 400 }}
+                sx={{ mb: 2, width: { xs: 200, md: 400 } }}
                 onChange={(e) => setNotes(e.target.value)}
                 value={notes}
               />
