@@ -91,11 +91,12 @@ const MainMenu = (props) => {
   const cart = useSelector(getCart);
 
   useEffect(() => {
-    if (localStorage.getItem('cart')) {
-      const productsFromLocal = JSON.parse(
-        localStorage.getItem('cart'),
-      ).products;
-      productsFromLocal.map((prod) => {
+    const local = JSON.parse(localStorage.getItem('cart'));
+    if (local !== null) {
+      // const productsFromLocal = JSON.parse(
+      //   localStorage.getItem('cart'),
+      // ).products;
+      local.products.map((prod) => {
         dispatch(addToCart(prod));
       });
     }

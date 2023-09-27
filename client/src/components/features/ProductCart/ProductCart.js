@@ -6,7 +6,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { editCart, addToCart } from '../../../redux/cartRedux';
+import { editCart, addToCart, removeItemCart } from '../../../redux/cartRedux';
 const ProductCart = (props) => {
   const dispatch = useDispatch();
   const product = useSelector((state) => getProductById(state, props.id));
@@ -118,6 +118,21 @@ const ProductCart = (props) => {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   };
+
+  const removeFromCart = async (itemId) => {
+    await dispatch(removeItemCart(itemId));
+    const local = await JSON.parse(localStorage.getItem('cart'));
+
+    if (local.products.length > 1) {
+      const prodLocal = await local.products.filter(
+        (item) => item.id !== itemId,
+      );
+      cart.products.push(prodLocal);
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } else {
+      localStorage.clear();
+    }
+  };
   return (
     <TableRow>
       <TableCell>{product.title}</TableCell>
@@ -128,7 +143,7 @@ const ProductCart = (props) => {
             <RemoveIcon />
           </IconButton>
         ) : (
-          <IconButton>
+          <IconButton onClick={() => removeFromCart(props.id)}>
             <HighlightOffIcon
               sx={{
                 '& :first-of-type': {
@@ -171,7 +186,7 @@ const ProductCart = (props) => {
         />
       </TableCell>
       <TableCell align="right">
-        <IconButton>
+        <IconButton onClick={() => removeFromCart(props.id)}>
           <BackspaceIcon
             sx={{
               '& :first-of-type': {

@@ -24,6 +24,7 @@ const ProductCard = ({ ...product }) => {
 
   const handleSubmit = () => {
     const local = JSON.parse(localStorage.getItem('cart'));
+    console.log('cos tu', local);
     if (local !== null) {
       const prodInLocal = local.products.find((e) => e.id === product.id);
       if (prodInLocal) {
