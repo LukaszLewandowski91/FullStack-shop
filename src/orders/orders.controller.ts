@@ -22,7 +22,7 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard)
   async create(@Body() orderData: CreateOrderDTO) {
     const order = orderData.order;
-    // const { order, ...otherData } = orderData;
+
     return await this.ordersService.create(orderData, order);
   }
 

@@ -1,41 +1,230 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getUser } from '../../../redux/usersRedux';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Alert, AlertTitle, Box, Grid, Typography } from '@mui/material';
-import { getCart } from '../../../redux/cartRedux';
+import {
+  Alert,
+  AlertTitle,
+  Box,
+  Grid,
+  Typography,
+  Button,
+  Snackbar,
+  TextField,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@mui/material';
+import { getCart, sendOrderRequest } from '../../../redux/cartRedux';
+import { styled } from '@mui/material/styles';
+import { getProducts } from '../../../redux/productsRedux';
 const OrderSummary = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => getUser(state));
+  const cart = useSelector(getCart);
+  const products = useSelector(getProducts);
   const [alert, setAlert] = useState(false);
+  const [deliveryType, setDeliveryType] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [city, setCity] = useState('');
+  const [address, setAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
   useEffect(() => {
-    if (!user.users) {
+    if (!user.users && cart.length > 0) {
       setAlert(true);
       setTimeout(() => {
         navigate('/login');
       }, 2000);
+    } else if (cart.length === 0) {
+      setAlert(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     }
   });
 
-  const cart = useSelector(getCart);
+  const handleClose = () => {
+    setAlert(false);
+  };
+
+  const ColorButton = styled(Button)(({ theme }) => ({
+    color: 'white',
+    backgroundColor: 'black',
+    fontFamily: 'Poppins',
+    textTransform: 'uppercase',
+    letterSpacing: 2,
+    borderRadius: 0,
+    height: 55,
+    width: 200,
+
+    '&:hover': {
+      backgroundColor: '#D10101',
+      textDecoration: 'none',
+      color: 'white',
+    },
+  }));
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let amountPay = 0;
+
+    cart.map((item) => {
+      const product = products.find((p) => p.id === item.productId);
+      console.log('karta,', product);
+      amountPay = amountPay + item.quantity * parseFloat(product.price);
+    });
+
+    const orderData = {
+      firstName: firstName,
+      lastName: lastName,
+      address: address,
+      city: city,
+      phoneNumber: phoneNumber,
+      email: email,
+      deliveryType: deliveryType,
+      amountProducts: cart.length,
+      order: cart,
+      userId: user.users.id,
+      amountPay: amountPay,
+    };
+    console.log(orderData);
+    dispatch(sendOrderRequest(orderData));
+  };
   return (
     <Grid container sx={{ mt: 2 }}>
-      {alert && (
-        <Alert severity="warning">
-          <AlertTitle>Please Log In</AlertTitle>
-          User not logged in — <strong>Please Log In</strong>
-        </Alert>
+      {alert && cart.length > 0 && (
+        <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity="warning"
+            sx={{ width: '100%' }}
+          >
+            <AlertTitle>Please Log In</AlertTitle>
+            User not logged in — <strong>Please Log In</strong>
+          </Alert>
+        </Snackbar>
       )}
-      <Box width="100%" display="flex" justifyContent="center">
-        <Typography variant="h3" fontFamily="Poppins" letterSpacing={2}>
-          Order Summary
-        </Typography>
-      </Box>
-      <Box
-        width="100%"
-        display="flex"
-        flexDirection={{ sx: 'column', md: 'row' }}
-      ></Box>
+      {alert && cart.length === 0 && (
+        <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity="warning"
+            sx={{ width: '100%' }}
+          >
+            Your cart is <strong>EMPTY</strong>
+          </Alert>
+        </Snackbar>
+      )}
+      {!alert && cart && (
+        <Box width="100%">
+          <Box width="100%" display="flex" justifyContent="center">
+            <Typography variant="h3" fontFamily="Poppins" letterSpacing={2}>
+              Order Summary
+            </Typography>
+          </Box>
+          <Box
+            width="100%"
+            display="flex"
+            flexDirection={{ xs: 'column', md: 'row' }}
+            marginTop={5}
+          >
+            <Box
+              sx={{
+                width: '100vw',
+                padding: 5,
+                columns: { md: 2, xs: 1 },
+              }}
+              component="form"
+            >
+              <TextField
+                required
+                id="firstName"
+                label="Firstname"
+                type="text"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+              <TextField
+                required
+                id="lastName"
+                label="Lastname"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+              <TextField
+                required
+                id="city"
+                label="City"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setCity(e.target.value)}
+              />
+              <TextField
+                required
+                id="address"
+                label="Address"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <TextField
+                required
+                id="phoneNumber"
+                label="Phone number"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+              <TextField
+                required
+                id="email"
+                label="Email"
+                type="email"
+                sx={{ margin: 1, width: '100%' }}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <FormControl sx={{ margin: 1, width: '100%' }}>
+                <FormLabel id="deliveryType">Delivery type</FormLabel>
+                <RadioGroup
+                  id="deliveryType"
+                  name="controlled-delivery-type"
+                  value={deliveryType}
+                  onChange={(e) => setDeliveryType(e.target.value)}
+                  required
+                >
+                  <FormControlLabel
+                    value="post"
+                    control={<Radio required />}
+                    label="Post"
+                  />
+                  <FormControlLabel
+                    value="dhl"
+                    control={<Radio required />}
+                    label="DHL"
+                  />
+                </RadioGroup>
+              </FormControl>
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                sx={{ margin: { xs: 2, md: 12 } }}
+              >
+                <ColorButton type="submit" onClick={(e) => handleSubmit(e)}>
+                  Confirm order
+                </ColorButton>
+              </Box>
+            </Box>
+            <Box sx={{ width: '100vw', background: 'lightgray', padding: 5 }}>
+              Test
+            </Box>
+          </Box>
+        </Box>
+      )}
     </Grid>
   );
 };

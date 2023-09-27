@@ -20,7 +20,7 @@ import ProductCart from '../ProductCart/ProductCart';
 
 const ShoppingCart = () => {
   const cart = useSelector(getCart);
-  console.log(cart);
+
   const ColorButton = styled(Button)(({ theme }) => ({
     color: 'white',
     backgroundColor: 'black',
@@ -105,7 +105,7 @@ const ShoppingCart = () => {
               </TableHead>
               <TableBody>
                 {cart.map((item) => (
-                  <ProductCart key={item.id} {...item} />
+                  <ProductCart key={item.productId} {...item} />
                 ))}
               </TableBody>
             </Table>

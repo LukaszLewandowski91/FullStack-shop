@@ -27,18 +27,20 @@ const ProductCard = ({ ...product }) => {
 
   const handleSubmit = () => {
     const local = JSON.parse(localStorage.getItem('cart'));
-    console.log('cos tu', local);
+
     if (local !== null) {
-      const prodInLocal = local.products.find((e) => e.id === product.id);
+      const prodInLocal = local.products.find(
+        (e) => e.productId === product.id,
+      );
       if (prodInLocal) {
-        prodInLocal.amount++;
+        prodInLocal.quantity++;
         console.log(prodInLocal);
         dispatch(editCart(prodInLocal));
         setStatus(true);
       } else {
         const productToLocal = {
-          id: product.id,
-          amount: 1,
+          productId: product.id,
+          quantity: 1,
           notes: '',
         };
         dispatch(addToCart(productToLocal));
@@ -48,8 +50,8 @@ const ProductCard = ({ ...product }) => {
       localStorage.setItem('cart', JSON.stringify(local));
     } else {
       const productToLocal = {
-        id: product.id,
-        amount: 1,
+        productId: product.id,
+        quantity: 1,
         notes: '',
       };
       dispatch(addToCart(productToLocal));

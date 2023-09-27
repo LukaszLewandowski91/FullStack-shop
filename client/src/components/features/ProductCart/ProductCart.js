@@ -15,8 +15,10 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { editCart, addToCart, removeItemCart } from '../../../redux/cartRedux';
 const ProductCart = (props) => {
   const dispatch = useDispatch();
-  const product = useSelector((state) => getProductById(state, props.id));
-  const [amount, setAmount] = useState(props.amount);
+  const product = useSelector((state) =>
+    getProductById(state, props.productId),
+  );
+  const [amount, setAmount] = useState(props.quantity);
   const [notes, setNotes] = useState(props.notes);
   const countingCart = (price, amount) => {
     const subtotal = parseFloat(price) * parseInt(amount);
@@ -33,15 +35,17 @@ const ProductCart = (props) => {
       setAmount(value);
       const local = JSON.parse(localStorage.getItem('cart'));
       if (local !== null) {
-        const prodInLocal = local.products.find((e) => e.id === product.id);
+        const prodInLocal = local.products.find(
+          (e) => e.productId === product.id,
+        );
         if (prodInLocal) {
-          prodInLocal.amount = parseInt(value);
+          prodInLocal.quantity = parseInt(value);
           prodInLocal.notes = notes;
           dispatch(editCart(prodInLocal));
         } else {
           const productToLocal = {
-            id: product.id,
-            amount: value,
+            productId: product.id,
+            quantity: value,
             notes: notes,
           };
           dispatch(addToCart(productToLocal));
@@ -50,8 +54,8 @@ const ProductCart = (props) => {
         localStorage.setItem('cart', JSON.stringify(local));
       } else {
         const productToLocal = {
-          id: product.id,
-          amount: value,
+          productId: product.id,
+          quantity: value,
           notes: notes,
         };
         dispatch(addToCart(productToLocal));
@@ -67,15 +71,17 @@ const ProductCart = (props) => {
       setAmount(value);
       const local = JSON.parse(localStorage.getItem('cart'));
       if (local !== null) {
-        const prodInLocal = local.products.find((e) => e.id === product.id);
+        const prodInLocal = local.products.find(
+          (e) => e.productId === product.id,
+        );
         if (prodInLocal) {
-          prodInLocal.amount = parseInt(value);
+          prodInLocal.quantity = parseInt(value);
           prodInLocal.notes = notes;
           dispatch(editCart(prodInLocal));
         } else {
           const productToLocal = {
-            id: product.id,
-            amount: value,
+            productId: product.id,
+            quantity: value,
             notes: notes,
           };
           dispatch(addToCart(productToLocal));
@@ -84,8 +90,8 @@ const ProductCart = (props) => {
         localStorage.setItem('cart', JSON.stringify(local));
       } else {
         const productToLocal = {
-          id: product.id,
-          amount: value,
+          productId: product.id,
+          quantity: value,
           notes: notes,
         };
         dispatch(addToCart(productToLocal));
@@ -97,16 +103,19 @@ const ProductCart = (props) => {
 
   const changeNotes = (notes) => {
     setNotes(notes);
+
     const local = JSON.parse(localStorage.getItem('cart'));
     if (local !== null) {
-      const prodInLocal = local.products.find((e) => e.id === product.id);
+      const prodInLocal = local.products.find(
+        (e) => e.productId === product.id,
+      );
       if (prodInLocal) {
         prodInLocal.notes = notes;
         dispatch(editCart(prodInLocal));
       } else {
         const productToLocal = {
-          id: product.id,
-          amount: amount,
+          productId: product.id,
+          quantity: amount,
           notes: notes,
         };
         dispatch(addToCart(productToLocal));
@@ -115,8 +124,8 @@ const ProductCart = (props) => {
       localStorage.setItem('cart', JSON.stringify(local));
     } else {
       const productToLocal = {
-        id: product.id,
-        amount: amount,
+        productId: product.id,
+        quantity: amount,
         notes: notes,
       };
       dispatch(addToCart(productToLocal));
@@ -131,12 +140,13 @@ const ProductCart = (props) => {
 
     if (local.products.length > 1) {
       const prodLocal = await local.products.filter(
-        (item) => item.id !== itemId,
+        (item) => item.productId !== itemId,
       );
       cart.products.push(prodLocal);
+      dispatch(editCart(prodLocal));
       localStorage.setItem('cart', JSON.stringify(cart));
     } else {
-      localStorage.clear();
+      localStorage.removeItem('cart');
     }
   };
   return (
@@ -150,7 +160,7 @@ const ProductCart = (props) => {
           </IconButton>
         ) : (
           <Tooltip title="Remove product">
-            <IconButton onClick={() => removeFromCart(props.id)}>
+            <IconButton onClick={() => removeFromCart(props.productId)}>
               <HighlightOffIcon
                 sx={{
                   '& :first-of-type': {
@@ -198,7 +208,7 @@ const ProductCart = (props) => {
       </TableCell>
       <TableCell align="right">
         <Tooltip title="Remove product">
-          <IconButton onClick={() => removeFromCart(props.id)}>
+          <IconButton onClick={() => removeFromCart(props.productId)}>
             <BackspaceIcon
               sx={{
                 '& :first-of-type': {

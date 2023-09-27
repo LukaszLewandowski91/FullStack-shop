@@ -34,15 +34,17 @@ const ProductDetails = () => {
   const handleSubmit = () => {
     const local = JSON.parse(localStorage.getItem('cart'));
     if (local !== null) {
-      const prodInLocal = local.products.find((e) => e.id === product.id);
+      const prodInLocal = local.products.find(
+        (e) => e.productId === product.id,
+      );
       if (prodInLocal) {
-        prodInLocal.amount = prodInLocal.amount + parseInt(value);
+        prodInLocal.quantity = parseInt(prodInLocal.quantity) + parseInt(value);
         prodInLocal.notes = notes;
         dispatch(editCart(prodInLocal));
       } else {
         const productToLocal = {
-          id: product.id,
-          amount: value,
+          productId: product.id,
+          quantity: parseInt(value),
           notes: notes,
         };
         dispatch(addToCart(productToLocal));
@@ -51,8 +53,8 @@ const ProductDetails = () => {
       localStorage.setItem('cart', JSON.stringify(local));
     } else {
       const productToLocal = {
-        id: product.id,
-        amount: value,
+        productId: product.id,
+        quantity: parseInt(value),
         notes: notes,
       };
       dispatch(addToCart(productToLocal));
@@ -60,8 +62,6 @@ const ProductDetails = () => {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
   };
-
-  console.log(notes);
 
   const ColorButton = styled(Button)(({ theme }) => ({
     color: 'white',

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Order, OrderDetails } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ProductsService } from 'src/products/products.service';
 
 @Injectable()
 export class OrdersService {
@@ -15,6 +16,7 @@ export class OrdersService {
             create: order.map((e) => ({
               quantity: e.quantity,
               productId: e.productId,
+              notes: e.notes,
             })),
           },
         },
