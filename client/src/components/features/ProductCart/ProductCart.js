@@ -44,25 +44,8 @@ const ProductCart = (props) => {
           prodInLocal.quantity = parseInt(value);
           prodInLocal.notes = notes;
           dispatch(editCart(prodInLocal));
-        } else {
-          const productToLocal = {
-            productId: product.id,
-            quantity: value,
-            notes: notes,
-          };
-          dispatch(addToCart(productToLocal));
-          local.products.push(productToLocal);
         }
         localStorage.setItem('cart', JSON.stringify(local));
-      } else {
-        const productToLocal = {
-          productId: product.id,
-          quantity: value,
-          notes: notes,
-        };
-        dispatch(addToCart(productToLocal));
-        cart.products.push(productToLocal);
-        localStorage.setItem('cart', JSON.stringify(cart));
       }
     }
   };
@@ -80,25 +63,8 @@ const ProductCart = (props) => {
           prodInLocal.quantity = parseInt(value);
           prodInLocal.notes = notes;
           dispatch(editCart(prodInLocal));
-        } else {
-          const productToLocal = {
-            productId: product.id,
-            quantity: value,
-            notes: notes,
-          };
-          dispatch(addToCart(productToLocal));
-          local.products.push(productToLocal);
         }
         localStorage.setItem('cart', JSON.stringify(local));
-      } else {
-        const productToLocal = {
-          productId: product.id,
-          quantity: value,
-          notes: notes,
-        };
-        dispatch(addToCart(productToLocal));
-        cart.products.push(productToLocal);
-        localStorage.setItem('cart', JSON.stringify(cart));
       }
     }
   };
@@ -114,25 +80,8 @@ const ProductCart = (props) => {
       if (prodInLocal) {
         prodInLocal.notes = notes;
         dispatch(editCart(prodInLocal));
-      } else {
-        const productToLocal = {
-          productId: product.id,
-          quantity: amount,
-          notes: notes,
-        };
-        dispatch(addToCart(productToLocal));
-        local.products.push(productToLocal);
       }
       localStorage.setItem('cart', JSON.stringify(local));
-    } else {
-      const productToLocal = {
-        productId: product.id,
-        quantity: amount,
-        notes: notes,
-      };
-      dispatch(addToCart(productToLocal));
-      cart.products.push(productToLocal);
-      localStorage.setItem('cart', JSON.stringify(cart));
     }
   };
 
@@ -144,7 +93,7 @@ const ProductCart = (props) => {
       const prodLocal = await local.products.filter(
         (item) => item.productId !== itemId,
       );
-      cart.products.push(prodLocal);
+      cart.products = prodLocal;
       dispatch(editCart(prodLocal));
       localStorage.setItem('cart', JSON.stringify(cart));
     } else {
