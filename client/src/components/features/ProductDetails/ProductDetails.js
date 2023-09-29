@@ -101,7 +101,11 @@ const ProductDetails = () => {
           >
             <Box component="div" display="flex">
               <ImageList
-                sx={{ display: { xs: 'none' }, width: 100, height: 300 }}
+                sx={{
+                  display: { xs: 'none', md: 'block' },
+                  width: 100,
+                  height: 300,
+                }}
                 cols={1}
                 rowHeight={100}
               >

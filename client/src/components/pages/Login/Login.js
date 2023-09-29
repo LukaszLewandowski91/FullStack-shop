@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Alert } from 'react-bootstrap';
 import {
   Avatar,
   Grid,
@@ -7,6 +6,9 @@ import {
   Typography,
   TextField,
   Button,
+  Snackbar,
+  Alert,
+  AlertTitle,
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRequest, loadLoggedUser, LOG_IN } from '../../../redux/usersRedux';
@@ -19,11 +21,12 @@ const Login = () => {
   const request = useSelector((state) => getRequest(state, LOG_IN));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [alert, setAlert] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setAlert(true);
     let res = await dispatch(loadLoggedUser({ email, password }));
 
     if (res && res.status === 201) {
@@ -32,7 +35,9 @@ const Login = () => {
       }, 1500);
     }
   };
-
+  const handleClose = () => {
+    setAlert(false);
+  };
   const avatarStyle = { backgroundColor: '#1bbd7e' };
   const formStyle = { margin: '5px auto' };
   return (
@@ -47,27 +52,33 @@ const Login = () => {
             Please fill this form to create an account
           </Typography>
         </Grid>
+        {request && request.success && (
+          <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              variant="filled"
+              onClose={handleClose}
+              severity="success"
+              sx={{ width: '100%' }}
+            >
+              <AlertTitle>Success</AlertTitle>
+              You have been successfully logged in.
+            </Alert>
+          </Snackbar>
+        )}
+        {request && request.error === 401 && (
+          <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+            <Alert
+              variant="filled"
+              onClose={handleClose}
+              severity="error"
+              sx={{ width: '100%' }}
+            >
+              <AlertTitle>Incorrect login or password</AlertTitle>
+              Please try again
+            </Alert>
+          </Snackbar>
+        )}
         <form className={styles.formStyle} onSubmit={handleSubmit}>
-          {request && request.success && (
-            <Alert variant="success">
-              <Alert.Heading>Success !</Alert.Heading>
-              <p>You have been successfully logged in.</p>
-            </Alert>
-          )}
-
-          {request && request.error === 401 && (
-            <Alert variant="danger">
-              <Alert.Heading>Incorrect login or password</Alert.Heading>
-              <p>Unexpected error... Try again</p>
-            </Alert>
-          )}
-
-          {request && request.pending && (
-            <Alert variant="success">
-              <Alert.Heading>Success !</Alert.Heading>
-              <p>You have been successfully logged in.</p>
-            </Alert>
-          )}
           <TextField
             fullWidth
             variant="standard"

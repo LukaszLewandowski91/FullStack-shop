@@ -27,6 +27,8 @@ const OrderSummary = () => {
   const cart = useSelector(getCart);
   const products = useSelector(getProducts);
   const [alert, setAlert] = useState(false);
+  const [emptyAlert, setEmptyAlert] = useState(false);
+  const [confirmAlert, setConfirmAlert] = useState(false);
   const [deliveryType, setDeliveryType] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -41,7 +43,7 @@ const OrderSummary = () => {
         navigate('/login');
       }, 2000);
     } else if (cart.length === 0) {
-      setAlert(true);
+      setEmptyAlert(true);
       setTimeout(() => {
         navigate('/');
       }, 2000);
@@ -50,6 +52,8 @@ const OrderSummary = () => {
 
   const handleClose = () => {
     setAlert(false);
+    setEmptyAlert(false);
+    setConfirmAlert(false);
   };
 
   const ColorButton = styled(Button)(({ theme }) => ({
@@ -69,13 +73,12 @@ const OrderSummary = () => {
     },
   }));
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let amountPay = 0;
 
     cart.map((item) => {
       const product = products.find((p) => p.id === item.productId);
-      console.log('karta,', product);
       amountPay = amountPay + item.quantity * parseFloat(product.price);
     });
 
@@ -93,7 +96,14 @@ const OrderSummary = () => {
       amountPay: amountPay,
     };
     console.log(orderData);
-    dispatch(sendOrderRequest(orderData));
+    const myOrder = await dispatch(sendOrderRequest(orderData));
+
+    if (myOrder && myOrder.status === 201) {
+      setConfirmAlert(true);
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
+    }
   };
   return (
     <Grid container sx={{ mt: 2 }}>
@@ -110,8 +120,12 @@ const OrderSummary = () => {
           </Alert>
         </Snackbar>
       )}
-      {alert && cart.length === 0 && (
-        <Snackbar open={alert} autoHideDuration={6000} onClose={handleClose}>
+      {emptyAlert && !confirmAlert && cart.length === 0 && (
+        <Snackbar
+          open={emptyAlert}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
           <Alert
             variant="filled"
             onClose={handleClose}
@@ -119,6 +133,23 @@ const OrderSummary = () => {
             sx={{ width: '100%' }}
           >
             Your cart is <strong>EMPTY</strong>
+          </Alert>
+        </Snackbar>
+      )}
+      {confirmAlert && (
+        <Snackbar
+          open={confirmAlert}
+          autoHideDuration={6000}
+          onClose={handleClose}
+        >
+          <Alert
+            variant="filled"
+            onClose={handleClose}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            <AlertTitle>Confirm</AlertTitle>
+            Your order has been saved
           </Alert>
         </Snackbar>
       )}

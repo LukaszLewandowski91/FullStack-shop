@@ -23,11 +23,13 @@ export const removeItemCart = (payload) => ({
 export const sendOrderRequest = (orderData) => {
   return async (dispatch) => {
     try {
-      await axios.post(`${API_URL}/orders`, orderData, {
+      const res = await axios.post(`${API_URL}/orders`, orderData, {
         withCredentials: true,
       });
+
       localStorage.removeItem('cart');
       dispatch(clearCart());
+      return res;
     } catch (e) {
       console.log(e);
     }
