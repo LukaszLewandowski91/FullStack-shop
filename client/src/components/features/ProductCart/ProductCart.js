@@ -12,7 +12,7 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { editCart, addToCart, removeItemCart } from '../../../redux/cartRedux';
+import { editCart, removeItemCart } from '../../../redux/cartRedux';
 
 const ProductCart = (props) => {
   const dispatch = useDispatch();
