@@ -15,14 +15,15 @@ import {
   Typography,
 } from '@mui/material';
 import { IMGS_URL } from '../../../config';
-
 import { editCart, addToCart } from '../../../redux/cartRedux';
 import { styled } from '@mui/material/styles';
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
+
   const { id } = useParams();
   const product = useSelector((state) => getProductById(state, id));
+
   const [activeImage, setActiveImage] = useState(product.gallery[0].image);
   const [value, setValue] = useState(1);
   const [notes, setNotes] = useState('');
@@ -32,6 +33,7 @@ const ProductDetails = () => {
   };
 
   const handleSubmit = () => {
+    console.log(product);
     const local = JSON.parse(localStorage.getItem('cart'));
     if (local !== null) {
       const prodInLocal = local.products.find(
@@ -83,9 +85,8 @@ const ProductDetails = () => {
       margin="5px 0 5px 0"
       sx={{ height: 500, alignItems: 'center' }}
     >
-      {!product ? (
-        <NotFound />
-      ) : (
+      {!product && <NotFound />}
+      {product && (
         <Grid
           container
           margin="5px 0 5px 0"
@@ -114,11 +115,11 @@ const ProductDetails = () => {
                     <ImageListItem
                       key={item.id}
                       sx={{ border: '1px solid black', objectFit: 'cover' }}
+                      onClick={() => setActiveImage(item.image)}
                     >
                       <img
                         alt={product.title}
                         src={`${IMGS_URL}/${item.image}`}
-                        onClick={() => setActiveImage(item.image)}
                       />
                     </ImageListItem>
                   ))}

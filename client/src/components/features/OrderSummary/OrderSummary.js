@@ -20,6 +20,7 @@ import {
 import { getCart, sendOrderRequest } from '../../../redux/cartRedux';
 import { styled } from '@mui/material/styles';
 import { getProducts } from '../../../redux/productsRedux';
+import OrderSummaryProduct from '../OrderSummaryProduct/OrderSummaryProduct';
 const OrderSummary = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -36,6 +37,8 @@ const OrderSummary = () => {
   const [address, setAddress] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [totalPrice, setTotalPrice] = useState();
+
   useEffect(() => {
     if (!user.users && cart.length > 0) {
       setAlert(true);
@@ -73,6 +76,21 @@ const OrderSummary = () => {
     },
   }));
 
+  const totalAmount = () => {
+    let amountPay = 0;
+
+    cart.map((item) => {
+      const product = products.find((p) => p.id === item.productId);
+      amountPay = amountPay + item.quantity * parseFloat(product.price);
+    });
+
+    setTotalPrice(amountPay);
+  };
+
+  useEffect(() => {
+    totalAmount();
+  }, [cart, products]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     let amountPay = 0;
@@ -105,6 +123,7 @@ const OrderSummary = () => {
       }, 2000);
     }
   };
+
   return (
     <Grid container sx={{ mt: 2 }}>
       {alert && cart.length > 0 && (
@@ -153,7 +172,7 @@ const OrderSummary = () => {
           </Alert>
         </Snackbar>
       )}
-      {!alert && cart && (
+      {!alert && !emptyAlert && cart && (
         <Box width="100%">
           <Box width="100%" display="flex" justifyContent="center">
             <Typography variant="h3" fontFamily="Poppins" letterSpacing={2}>
@@ -250,8 +269,57 @@ const OrderSummary = () => {
                 </ColorButton>
               </Box>
             </Box>
-            <Box sx={{ width: '100vw', background: 'lightgray', padding: 5 }}>
-              Test
+            <Box
+              sx={{
+                width: '100vw',
+                background: '#EFEFEF',
+                padding: 5,
+                display: { xs: 'none', md: 'block', sm: 'block' },
+              }}
+            >
+              <TextField value={'Product'} variant="standard" disabled />
+              <TextField value={'Price'} variant="standard" disabled />
+              <TextField value={'Quantity'} variant="standard" disabled />
+              <TextField value={'Total'} variant="standard" disabled />
+              {cart.map((item) => (
+                <OrderSummaryProduct key={item.productId} {...item} />
+              ))}
+              <TextField value={''} disabled variant="standard" />
+              <TextField value={''} disabled variant="standard" />
+              <TextField value={'Total price:'} variant="standard" disabled />
+              <TextField
+                value={`$ ${totalPrice}`}
+                variant="standard"
+                disabled
+              ></TextField>
+            </Box>
+            <Box
+              sx={{
+                width: '100vw',
+                background: '#EFEFEF',
+                padding: 5,
+                display: { xs: 'flex', md: 'none', sm: 'none' },
+                columns: { xs: 2, sm: 4, md: 4 },
+                flexDirection: 'column',
+              }}
+            >
+              <Box display="flex">
+                <TextField value={'Product'} variant="standard" disabled />
+                <TextField value={'Quantity'} variant="standard" disabled />
+              </Box>
+              <Box>
+                {cart.map((item) => (
+                  <OrderSummaryProduct key={item.productId} {...item} />
+                ))}
+              </Box>
+              <Box display="flex">
+                <TextField value={'Total price:'} variant="standard" disabled />
+                <TextField
+                  value={`$ ${totalPrice}`}
+                  variant="standard"
+                  disabled
+                />
+              </Box>
             </Box>
           </Box>
         </Box>

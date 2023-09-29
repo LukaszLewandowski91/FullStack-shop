@@ -43,14 +43,12 @@ const MainMenu = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const user = useSelector((state) => getUser(state));
   const categories = useSelector(getCategories);
   const navigate = useNavigate();
   const isMenuOpen = Boolean(anchorEl);
-  const isCategoryOpen = Boolean(categoryAnchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const dispatch = useDispatch();
@@ -58,20 +56,12 @@ const MainMenu = (props) => {
     setAnchorEl(event.currentTarget);
   };
 
-  // const handleMobileCategoryOpen = (event) => {
-  //   setCategoryAnchorEl(event.currentTarget);
-  // };
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
 
   const handleMenuClose = () => {
     setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const handleCategoryClose = () => {
-    setCategoryAnchorEl(null);
     handleMobileMenuClose();
   };
 
@@ -113,23 +103,6 @@ const MainMenu = (props) => {
       <MenuItem onClick={handleLogout}>Sign Out</MenuItem>
     </Menu>
   );
-  const categoryId = 'primary-categories-menu';
-  // const renderCategoriesMenu = (
-  //   <Menu
-  //     anchorEl={categoryAnchorEl}
-  //     id={categoryId}
-  //     keepMounted
-  //     open={isCategoryOpen}
-  //     onClose={handleCategoryClose}
-  //   >
-  //     {categories &&
-  //       categories.map((category) => (
-  //         <MenuItem key={category.id} onClick={handleCategoryClose}>
-  //           {category.description}
-  //         </MenuItem>
-  //       ))}
-  //   </Menu>
-  // );
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -211,37 +184,6 @@ const MainMenu = (props) => {
     </Box>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar position="static" color="transparent" component="nav">
@@ -328,7 +270,6 @@ const MainMenu = (props) => {
         </Drawer>
       </nav>
       {renderMenu}
-      {/* {renderCategoriesMenu} */}
     </Box>
   );
 };

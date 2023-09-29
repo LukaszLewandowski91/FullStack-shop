@@ -17,7 +17,7 @@ const ProductsBoard = () => {
       container
       mb={5}
       pl={3}
-      spacing={{ xs: 2, md: 3 }}
+      spacing={{ xs: 2, md: 2 }}
       columns={{ xs: 1, sm: 2, md: 12 }}
       justifyContent="center"
     >

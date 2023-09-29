@@ -19,7 +19,20 @@ export const loadProductsRequest = () => {
         withCredentials: true,
       });
 
-      dispatch(loadProducts(res.data));
+      await dispatch(loadProducts(res.data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+};
+
+export const loadProductById = (id) => {
+  return async (dispatch) => {
+    try {
+      let res = await axios.get(`${API_URL}/products/${id}`, {
+        withCredentials: true,
+      });
+      return res.data;
     } catch (e) {
       console.log(e);
     }

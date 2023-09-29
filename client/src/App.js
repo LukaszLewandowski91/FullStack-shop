@@ -11,12 +11,14 @@ import Home from './components/pages/Home/Home';
 import ProductDetails from './components/features/ProductDetails/ProductDetails';
 import ShoppingCart from './components/features/ShoppingCart/ShoppingCart';
 import OrderSummary from './components/features/OrderSummary/OrderSummary';
+import { loadProductsRequest } from './redux/productsRedux';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadCategoriesRequest());
+    dispatch(loadProductsRequest());
     dispatch(loadUserFromCookies(JSON.parse(localStorage.getItem('login'))));
   }, [dispatch]);
 

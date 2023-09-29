@@ -10,7 +10,6 @@ const MainCarousel = () => {
   const categories = useSelector(getCategories);
 
   const [activeStep, setActiveStep] = useState(0);
-  const maxSteps = categories.length;
 
   const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 

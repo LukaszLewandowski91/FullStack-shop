@@ -13,11 +13,13 @@ import AddIcon from '@mui/icons-material/Add';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { editCart, addToCart, removeItemCart } from '../../../redux/cartRedux';
+
 const ProductCart = (props) => {
   const dispatch = useDispatch();
   const product = useSelector((state) =>
     getProductById(state, props.productId),
   );
+
   const [amount, setAmount] = useState(props.quantity);
   const [notes, setNotes] = useState(props.notes);
   const countingCart = (price, amount) => {
