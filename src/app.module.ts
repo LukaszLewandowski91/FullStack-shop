@@ -43,6 +43,7 @@ export class AppModule implements NestModule {
           origin: [
             'http://localhost:3000',
             'https://electronicshop-8136.onrender.com/',
+            'http://localhost:8000',
           ],
           credentials: true,
         }),

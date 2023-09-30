@@ -42,19 +42,22 @@ export const loadUserFromCookies = (userData) => {
     try {
       await dispatch(logIn(userData));
     } catch (e) {
-      console.log(e);
+      return e;
     }
   };
 };
 
 export const registerUser = (userData) => {
   return async (dispatch) => {
+    dispatch(startRequest({ name: LOG_IN }));
     try {
-      await axios.post(`${API_URL}/auth/register`, userData, {
+      let res = await axios.post(`${API_URL}/auth/register`, userData, {
         withCredentials: true,
       });
+      return res;
     } catch (e) {
       console.log(e);
+      dispatch(errorRequest({ name: LOG_IN, error: e.response.status }));
     }
   };
 };
