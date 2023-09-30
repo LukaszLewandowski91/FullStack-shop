@@ -40,7 +40,10 @@ export class AppModule implements NestModule {
     consumer
       .apply(
         cors({
-          origin: 'http://localhost:3000',
+          origin: [
+            'http://localhost:3000',
+            'https://electronicshop-8136.onrender.com/',
+          ],
           credentials: true,
         }),
       )
